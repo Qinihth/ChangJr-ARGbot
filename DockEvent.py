@@ -1,6 +1,4 @@
-import discord, random, pytz 
-from discord.ext import commands
-from discord import app_commands
+import discord
 
 
 def DockEvent(arg):
@@ -87,8 +85,8 @@ def DockEvent(arg):
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
             dockclose.add_field(name="❖ 工作結算",value="🩷魅力⬆️⬆️")
             dockclose.set_author(name="海港特殊事件-結算")
-            return dockclose 
-        
+            return dockclose
+
         case 13:
             dockclose = discord.Embed(title="先發制人",description="➤你旅途中偶然聽見外地商人談及敵軍調動與物資轉運，便默記於心。回家後立即上報軍方，經研判屬實，我軍隨即調整部署，成功先發制人。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -137,7 +135,7 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value="❌跳水不及格成績 ⬆️⬆️ ")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-        
+
         case 20:
             dockclose = discord.Embed(title="好討厭的感覺啊！",description="➤既然你誠心誠意地發問了，為了防止世界被破壞，為了守護世界的和平......")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -214,7 +212,7 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value=" 👛 資產:heavy_minus_sign: 5000金、數張金融卡及證件")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-            
+
         case 31:
             dockclose = discord.Embed(title="救命夏夷跳！",description="➤本來你的腦袋有源源不絕的靈感浮現，下一秒突然有隻大強飛到你面前！！！！！\n嚇到靈感瞬間噴飛......唔...呃呃呃(開始狂吐)。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -242,7 +240,7 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value="💰資產⬆️⬆️⬆️\n❤️ 良心⬇️⬇️")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-            
+
         case 35:
             dockclose = discord.Embed(title="風中耳語",description="➤你獨自漫步在海堤上，正在考慮著下海的角度時，空無一人的海堤，徐徐的海風讓你忍不住的發抖。\n你聽見了風聲彷彿耳語飄散在耳際：「我有一個小知識……」")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -389,7 +387,7 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value="＼MYGA／，精神值增加10點。")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-        
+
         case 57:
             dockclose = discord.Embed(title="有福同享",description="➤中午休息時間，你到了奄茶購買飲品，剛好碰上了抽獎活動，幸運抽到買 1 送 10 ，你將額外送的 10 杯帶回工作場所與同事分享，提升了大家下午工作的能量。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -403,14 +401,14 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value="各項能力大幅下降⬇️⬇️⬇️⬇️\n你的人生在此寫下了一個大大污點…… ")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-            
+
         case 59:
             dockclose = discord.Embed(title="讓雞排飛",description="➤你走在路上，哼著歌，手上的塑膠袋裝著剛炸好的酥脆雞排，然後突然就被土匪給劫了雞排。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
             dockclose.add_field(name="❖ 工作結算",value="失去雞排\n心相⬇️ ⬇️ ⬇️ ⬇️ ⬇️")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-            
+
         case 60:
             dockclose = discord.Embed(title="做人失敗",description="➤你是一位警長，正在會議中勸導大家找出兇殺案的兇手。\n經過了各方長期論述後得出了一個結論：先把你丟下海裡與闡國人作伴！\n只能說是你平時的誠信度不足，做人失敗...\n你還來不及逃離或是反抗就在會議後被眾人綁上石頭丟下水，成為海闡的一份子。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)

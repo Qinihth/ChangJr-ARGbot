@@ -1,14 +1,13 @@
-import discord, random, pytz, json, os, math, ARG
+import discord, random, pytz, ARG
 from discord.ext import commands
-from discord import app_commands
-from datetime import datetime, timezone
-from DockEvent import DockEvent 
+from datetime import datetime
+from DockEvent import DockEvent
 
 
 intents = discord.Intents.default()
 intents.message_content = True
 Token = ''
-channelid = 
+channelid = 0
 
 GUILD_ID = discord.Object(channelid)
 
@@ -20,7 +19,7 @@ class Index(discord.ui.View):
         await interaction.response.send_message(view=Work(),ephemeral=True)
     @discord.ui.button(label="個人狀態",style=discord.ButtonStyle.primary, custom_id='2')
     async def button_state(self, interaction: discord.Interaction, button: discord.ui.Button):
-        user = interaction.user.id 
+        user = interaction.user.id
         print(f"{user}")
         personalstate = discord.Embed(title="個人狀態Beta",url="https://blogs.mtdv.me/blog/posts/nDIQhaU8Kd", description="由於技術上的問題方士團仍無法在Discord 上重現渾元萬劫的個人狀態的部分，但有對此功能仍有興趣的諸侯們仍然可以透過上方「個人狀態Beta」連結體驗測試版")
         await interaction.response.send_message(embed=personalstate,ephemeral=True)
@@ -31,7 +30,7 @@ class Index(discord.ui.View):
         curTinTW = timeInTW.strftime("%H")
         curTinTW = int(curTinTW)
         if curTinTW >= 23 or curTinTW <= 6:
-            greeting = "給奄去睡覺喔！" 
+            greeting = "給奄去睡覺喔！"
         elif 6 < curTinTW < 11:
             greeting = "早奄"
         elif 11 <= curTinTW < 18:
@@ -42,22 +41,22 @@ class Index(discord.ui.View):
     @discord.ui.button(label="電子貓",style=discord.ButtonStyle.primary, custom_id='4',)
     async def button_state2(self, interaction: discord.Interaction, button: discord.ui.Button):
         data = ARG.load_data()
-        user_id = str(interaction.user.id) 
+        user_id = str(interaction.user.id)
         if user_id not in data:
             opening = "```diff\n! Initializing YAST ( Yan Academy of Sciences Terminal ) confirming permissions...\n! 奄國科學院控制系統初始化，確認權限中...\n\n! Authorization granted.\n! 權限認證通過。\n\n! Restructuring structural and temporal data...\n! 正在進行結構資料及時空資料重整...\n\n! Please enter designated project authorization code:\n! 請輸入指定計畫授權碼：\n> ████████████████\n\n! Initiating detection and assessment of Yan citizens and lords’ capabilities.\n! 開始偵測及檢查奄國國民及諸侯的各項能力。\n\n> Progress:[ ▓▓░░░░░░░░░░░░░░░░░░░░░░ ] 12%...\n> Progress:[ ▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░ ] 31%...\n> Progress:[ ▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░ ] 39%...\n> Progress:[ ▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░ ] 41%...\n> Progress:[ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░ ] 53%...\n> Progress:[ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░ ] 63%...\n> Progress:[ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░ ] 78%...\n> Progress:[ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ ] 92%...\n> Progress:[ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ ] 100%...\n\n! Detection and assessment complete!\n! 偵測及檢查完畢！\n\n! Majority of Yan citizens show only ~1% deviation compared to previous assessment — within acceptable range.\n! 奄國多數國民各項能力與上次檢測結果對比能力誤差約為1%，為可容許值。\n\n- WARNING: Significant capability drop detected among Yan lords! Deviation exceeds 98%! Affected attributes include, but are not limited to: Physical Power, Command, Mental Force, and Charisma. Lords’ Capability Table must be re-established!\n- 警告：奄國諸侯職位國民能力大幅降低！能力誤差值超過98%！降低能力包括且不限於肉體能力、統御力、精神力、親和力，需重新建立諸侯能力表！\n\n> Send re-evaluation request to lord personal devices?\n> 是否向諸侯隨身裝置發送重新檢測請求？\n> (Y/N)\n```"
             await interaction.response.send_message(opening,view=newopening(),ephemeral=True)
         else:
-            check_mark = ARG.daily_check(user_id) 
-            if check_mark == 4: 
+            check_mark = ARG.daily_check(user_id)
+            if check_mark == 4:
                 await  interaction.response.send_message("charactor Dead",ephemeral=True)
             else:
-                displaypersonalstate = ARG.display_state(user_id)            
+                displaypersonalstate = ARG.display_state(user_id)
                 await interaction.response.send_message(embed=displaypersonalstate,view=MainOffice(),ephemeral=True)
     @discord.ui.button(label="自由海港",style=discord.ButtonStyle.primary, custom_id='5')
     async def button_freedock(sself, interaction: discord.Interaction, button: discord.ui.Button):
         number = random.randint(17,69)
-        dockclose = DockEvent(number) 
-        if number == 69:       
+        dockclose = DockEvent(number)
+        if number == 69:
             oifile =  discord.File("51121.gif")
             await interaction.response.send_message(embed=dockclose,file=oifile,ephemeral=True)
         elif number == 51:
@@ -70,7 +69,7 @@ class newopening(discord.ui.View):
     @discord.ui.button(label="Y",style=discord.ButtonStyle.success)
     async def button_YES(self, interaction: discord.Interaction, button: discord.ui.Button):
         data = ARG.load_data()
-        user_id = str(interaction.user.id) 
+        user_id = str(interaction.user.id)
         data[user_id] = ARG.init_user(user_id, interaction.user.id, interaction.user.display_name)
         ARG.save_data(data)
         await interaction.response.send_message(view=Init_Kingdom(),ephemeral=True)
@@ -113,7 +112,7 @@ class RegistOffice(discord.ui.View):
         await interaction.response.send_message(embed=embed,ephemeral=True)
     @discord.ui.button(label="請/收假",style=discord.ButtonStyle.primary)
     async def button_vacation(self, interaction: discord.Interaction, button: discord.ui.Button):
-        data = ARG.load_data() 
+        data = ARG.load_data()
         user_id = str(interaction.user.id)
         if data[user_id]["vacation"] == False:
             data[user_id]["vacation"] = True
@@ -157,7 +156,7 @@ class FoodCourt(discord.ui.View):
         else:
             embed = discord.Embed(title="吃飽", description="test")
         await interaction.response.send_message(embed=embed,ephemeral=True)
-    
+
 class Shop(discord.ui.View):
     @discord.ui.button(label="升級軍事",style=discord.ButtonStyle.primary)
     async def button_MIL_upgrade(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -228,12 +227,12 @@ class Work(discord.ui.View):
             await  interaction.response.send_message("charactor Dead",ephemeral=True)
         else:
             selected_event = ARG.event_lottery(interaction.user.id,'CUL','TEC','BUS','MIL',1)
-            if selected_event == 0: 
+            if selected_event == 0:
                 ARG.gain_state(str(interaction.user.id),'CHR',2)
                 await  interaction.response.send_message("nothing happend",ephemeral=True)
             else:
                 await  interaction.response.send_message(view=EventChoice("BalladssEvent",selected_event),ephemeral=True)
-        
+
     @discord.ui.button(label="兵營",style=discord.ButtonStyle.success, row=1)
     async def button_military(self, interaction: discord.Interaction, button: discord.ui.Button):
         check_mark = ARG.daily_check(str(interaction.user.id))
@@ -243,8 +242,8 @@ class Work(discord.ui.View):
             await  interaction.response.send_message("charactor Dead",ephemeral=True)
         else:
             selected_event = ARG.event_lottery(interaction.user.id,'MIL','TEC','CUL','BUS',1)
-            if selected_event == 0: 
-                ARG.gain_state(str(interaction.user.id),'STR',1) 
+            if selected_event == 0:
+                ARG.gain_state(str(interaction.user.id),'STR',1)
                 amount = ARG.resource_mag(str(interaction.user.id),'STR') * (random.randint(4,9))
                 ARG.gain_resource(str(interaction.user.id),'MIL_rs',amount)
                 await  interaction.response.send_message("nothing happend",ephemeral=True)
@@ -259,8 +258,8 @@ class Work(discord.ui.View):
             await  interaction.response.send_message("charactor Dead",ephemeral=True)
         else:
             selected_event = ARG.event_lottery(interaction.user.id,'BUS','CUL','MIL','TEC',2)
-            if selected_event == 0: 
-                ARG.gain_state(str(interaction.user.id),'DOM',1) 
+            if selected_event == 0:
+                ARG.gain_state(str(interaction.user.id),'DOM',1)
                 amount = ARG.resource_mag(str(interaction.user.id),'DOM') * (random.randint(4,9))
                 ARG.gain_resource(str(interaction.user.id),'BUS_rs',amount)
                 await  interaction.response.send_message("nothing happend",ephemeral=True)
@@ -275,8 +274,8 @@ class Work(discord.ui.View):
             await  interaction.response.send_message("charactor Dead",ephemeral=True)
         else:
             selected_event = ARG.event_lottery(interaction.user.id,'MIL','TEC','CUL','BUS',1)
-            if selected_event == 0: 
-                ARG.gain_state(str(interaction.user.id),'INT',1) 
+            if selected_event == 0:
+                ARG.gain_state(str(interaction.user.id),'INT',1)
                 amount = ARG.resource_mag(str(interaction.user.id),'INT') * (random.randint(4,9))
                 ARG.gain_resource(str(interaction.user.id),'TEC_rs',amount)
                 await  interaction.response.send_message("nothing happend",ephemeral=True)
@@ -291,8 +290,8 @@ class Work(discord.ui.View):
             await  interaction.response.send_message("charactor Dead",ephemeral=True)
         else:
             selected_event = ARG.event_lottery(interaction.user.id,'MIL','TEC','CUL','BUS',1)
-            if selected_event == 0: 
-                ARG.gain_state(str(interaction.user.id),'CHR',1) 
+            if selected_event == 0:
+                ARG.gain_state(str(interaction.user.id),'CHR',1)
                 amount = ARG.resource_mag(str(interaction.user.id),'CHR') * (random.randint(4,9))
                 ARG.gain_resource(str(interaction.user.id),'CUL_rs',amount)
                 await  interaction.response.send_message("nothing happend",ephemeral=True)
@@ -308,7 +307,7 @@ class Work(discord.ui.View):
             await  interaction.response.send_message("charactor Dead",ephemeral=True)
         else:
             selected_event = ARG.event_lottery(interaction.user.id,'MIL','TEC','BUS','CUL',3)
-            if selected_event == 0: 
+            if selected_event == 0:
                 amount = ARG.resource_mag(str(interaction.user.id),'STR') * 10
                 ARG.gain_resource(str(interaction.user.id),'MIL_rs',amount)
                 await  interaction.response.send_message("nothing happend",ephemeral=True)
@@ -323,7 +322,7 @@ class Work(discord.ui.View):
             await  interaction.response.send_message("charactor Dead",ephemeral=True)
         else:
             selected_event = ARG.event_lottery(interaction.user.id,'MIL','TEC','BUS','CUL',3)
-            if selected_event == 0: 
+            if selected_event == 0:
                 amount = ARG.resource_mag(str(interaction.user.id),'DOM') * 10
                 ARG.gain_resource(str(interaction.user.id),'BUS_rs',amount)
                 await  interaction.response.send_message("nothing happend",ephemeral=True)
@@ -338,7 +337,7 @@ class Work(discord.ui.View):
             await  interaction.response.send_message("charactor Dead",ephemeral=True)
         else:
             selected_event = ARG.event_lottery(interaction.user.id,'MIL','TEC','BUS','CUL',3)
-            if selected_event == 0: 
+            if selected_event == 0:
                 amount = ARG.resource_mag(str(interaction.user.id),'INT') * 10
                 ARG.gain_resource(str(interaction.user.id),'TEC_rs',amount)
                 await  interaction.response.send_message("nothing happend",ephemeral=True)
@@ -353,18 +352,18 @@ class Work(discord.ui.View):
             await  interaction.response.send_message("charactor Dead",ephemeral=True)
         else:
             selected_event = ARG.event_lottery(interaction.user.id,'MIL','TEC','BUS','CUL',3)
-            if selected_event == 0: 
+            if selected_event == 0:
                 amount = ARG.resource_mag(str(interaction.user.id),'CHR') * 10
                 ARG.gain_resource(str(interaction.user.id),'CUL_rs',amount)
                 await  interaction.response.send_message("nothing happend",ephemeral=True)
             else:
                 await  interaction.response.send_message(view=EventChoice("MuseumEvent",selected_event),ephemeral=True)
-    
+
     @discord.ui.button(label="海港",style=discord.ButtonStyle.secondary, row=3)
     async def button_dock(self, interaction: discord.Interaction, button: discord.ui.Button):
         number = random.randint(1,69)
-        dockclose = DockEvent(number) 
-        if number == 69:       
+        dockclose = DockEvent(number)
+        if number == 69:
             oifile =  discord.File("51121.gif")
             await interaction.response.send_message(embed=dockclose,file=oifile,ephemeral=True)
         elif number == 51:
@@ -414,5 +413,3 @@ async def summonCJ(interaction: discord.Interaction):
     await interaction.channel.send(file = thumbnailfile,view=Index())
 
 client.run(Token)
-
-
