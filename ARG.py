@@ -1,5 +1,6 @@
 import discord, random, pytz, json, os, math
-from datetime import datetime
+from discord.ext import commands
+from datetime import datetime, timezone, timedelta
 
 def load_data():
     DATA_FILE = "PS.json"
@@ -38,7 +39,7 @@ def init_user(user_id, name, user_name):
     }
 
 def init_state(userid):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
     cuts = sorted(random.sample(range(1, 16), 3))
     data[user_id]["STR"] = cuts[0]
@@ -48,13 +49,13 @@ def init_state(userid):
     save_data(data)
 
 def kingdom_info(userid,kingdom):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
     data[user_id]["kingdom"] = kingdom
     save_data(data)
 
 def Work_update(userid, mount: int):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
     todate = get_date()
     if data[user_id]["stamina"] != 0:
@@ -63,7 +64,7 @@ def Work_update(userid, mount: int):
         save_data(data)
 
 def display_warehouse(userid):
-    data = load_data()
+    data = load_data() 
     user = data[str(userid)]
     displaypersonalstate = discord.Embed(title=f"倉庫")
     displaypersonalstate.add_field(name=f":dagger: 軍事  LV{(user['MIL'])} :     {(user['MIL_rs'])}", value="",inline=False)
@@ -74,7 +75,7 @@ def display_warehouse(userid):
     return displaypersonalstate
 
 def display_state(userid):
-    data = load_data()
+    data = load_data() 
     user = data[str(userid)]
     hunger = ""
     for i in range(user['hunger']):
@@ -91,60 +92,63 @@ def display_state(userid):
     return displaypersonalstate
 
 def daily_check(userid):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
     todate = get_date()
-    if data[user_id]["last_login"] == todate:
-        if data[user_id]["stamina"] == 0:
-            return(1)
-        else:
-            return(0)
+    if data[user_id]["vacation"] == True :
+        return (3)
     else:
-        data[user_id]["stamina"] = 3
-        last_login = datetime.strptime(data[user_id]["last_login"], "%Y%m%d")
-        last_feed = datetime.strptime(data[user_id]["last_feed"], "%Y%m%d")
-        now = datetime.strptime(todate, "%Y%m%d")
-        delta = now - last_feed
-        days = delta.days
-        if days >= 10:
-            return(4)
-        hunger = 0
-        for i in range(days):
-            if i < 4:
-                hunger += 1
-            elif i >= 4 and i < 8:
-                hunger += 2
-            elif i >= 8 and i < 11:
-                hunger += 3
-        data[user_id]["hunger"] -= hunger
-        if data[user_id]["last_login"] != data[user_id]["last_feed"]:
-            prehdelta = last_login - last_feed
-            predays = prehdelta.days
-            prehunger = 0
-            for i in range(predays):
-                if i < 4:
-                    prehunger += 1
+        if data[user_id]["last_login"] == todate:
+            if data[user_id]["stamina"] == 0:
+                return(1)
+            else:
+                return(0)
+        else:
+            data[user_id]["stamina"] = 3
+            last_login = datetime.strptime(data[user_id]["last_login"], "%Y%m%d")
+            last_feed = datetime.strptime(data[user_id]["last_feed"], "%Y%m%d")
+            now = datetime.strptime(todate, "%Y%m%d")
+            delta = now - last_feed
+            days = delta.days
+            if days >= 10:
+                return(4)
+            hunger = 0
+            for i in range(days):
+                if i < 4: 
+                    hunger += 1 
                 elif i >= 4 and i < 8:
-                    prehunger += 2
+                    hunger += 2
                 elif i >= 8 and i < 11:
-                    prehunger += 3
-            data[user_id]["hunger"] += prehunger
-        data[user_id]["last_login"] = todate
-    save_data(data)
-    return(2)
-
+                    hunger += 3  
+            data[user_id]["hunger"] -= hunger
+            if data[user_id]["last_login"] != data[user_id]["last_feed"]:
+                prehdelta = last_login - last_feed
+                predays = prehdelta.days
+                prehunger = 0
+                for i in range(predays):
+                    if i < 4: 
+                        prehunger += 1 
+                    elif i >= 4 and i < 8:
+                        prehunger += 2
+                    elif i >= 8 and i < 11:
+                        prehunger += 3  
+                data[user_id]["hunger"] += prehunger
+            data[user_id]["last_login"] = todate 
+        save_data(data)
+        return(2)
+    
 # 0 checked before
 # 1 checked before, no stamina
 # 2 checked, alive
 # 4 dead
 
 def feed(userid,meal):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
-    todate = get_date()
+    todate = get_date() 
     if meal == 1 and data[user_id]["stamina"] > 0:
         data[user_id]["hunger"] += 1
-        data[user_id]["stamina"] -= 1
+        data[user_id]["stamina"] -= 1 
     elif meal == 2 and data[user_id]["stamina"] > 1:
         data[user_id]["hunger"] += 3
         data[user_id]["stamina"] -= 2
@@ -152,14 +156,43 @@ def feed(userid,meal):
         data[user_id]["hunger"] += 6
         data[user_id]["stamina"] -= 3
     else:
-        return(1)
+        feed_message = "```diff\n- 行動力不足\n```"
+        return(feed_message)
+    if data[user_id]["hunger"] > 20:
+        data[user_id]["hunger"] = 20
     data[user_id]["last_feed"] = todate
     save_data(data)
+    feed_message = "```diff\n! 吃飽\n```"
+    return(feed_message)
+
+def vacation(user_id):
+    data = load_data() 
+    if data[user_id]["vacation"] == False:
+        data[user_id]["vacation"] = True
+        save_data(data)
+        rename_message = "```diff\n! 請假成功\n```"
+        return(rename_messag)
+    elif data[user_id]["vacation"] == True:
+        if data[user_id]["last_login"] != data[user_id]["last_feed"] :
+            last_login = datetime.strptime(data[user_id]["last_login"], "%Y%m%d")
+            last_feed = datetime.strptime(data[user_id]["last_feed"], "%Y%m%d")
+            delta = last_login - last_feed
+            last_login = datetime.strptime(get_date(), "%Y%m%d")
+            last_feed = last_login - timedelta(days=delta.days)
+            data[user_id]["last_login"] = get_date()
+            data[user_id]["last_feed"] = last_feed.strftime("%Y%m%d")
+        else:
+            data[user_id]["last_login"] = get_date()
+            data[user_id]["last_feed"] = get_date()
+        data[user_id]["vacation"] = False
+        save_data(data)
+        rename_message = "```diff\n! 收假成功\n```"
+        return(rename_message)
 
 def event_lottery(userid,A,B,C,D,types):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
-    prob = 0
+    prob = 0 
     if types == 1:
         event_weights = {
             "event1": {A: 0, B: 0},
@@ -192,7 +225,7 @@ def event_lottery(userid,A,B,C,D,types):
             "event4": {D: 0, C: 0},
             "event5": {A: 0, C: 0},
         }
-    for resource in [A, B, C, D]:
+    for resource in [A, B, C, D]:      
         if data[user_id][resource] == 1:
             for event in event_weights:
                 if resource in event_weights[event]:
@@ -214,15 +247,18 @@ def event_lottery(userid,A,B,C,D,types):
                     event_weights[event][resource] = 0.8
             prob += 0.8
         elif data[user_id][resource] == 5:
-            for event in event_weights:
+            for event in event_weights: 
                 if resource in event_weights[event]:
                     event_weights[event1][resource] = 1
             prob += 1
     if random.random() > prob/4:
         return(0)
     else:
-        event_names = list(event_weights.keys())
-        scores = [sum(event_weights["event1"].values()),sum(event_weights["event2"].values()),sum(event_weights["event3"].values()),sum(event_weights["event4"].values()),sum(event_weights["event5"].values()) * 2]
+        event_names = list(event_weights.keys()) 
+        if types in (3, 4):
+            scores = [sum(event_weights["event1"].values()),sum(event_weights["event2"].values()),sum(event_weights["event3"].values()),sum(event_weights["event4"].values()),sum(event_weights["event5"].values())]
+        else:
+            scores = [sum(event_weights["event1"].values()),sum(event_weights["event2"].values()),sum(event_weights["event3"].values()),sum(event_weights["event4"].values()),sum(event_weights["event5"].values()) * 2]
         exp_scores = [math.exp(s) for s in scores]
         total = sum(exp_scores)
         probs = [s / total for s in exp_scores]
@@ -231,11 +267,20 @@ def event_lottery(userid,A,B,C,D,types):
         for event, prob in zip(event_names, probs):
             cumulative += prob
             if r <= cumulative:
-                return list(event_weights[event].keys())
+                return event
         return None
 
+def minus_stamina(user_id):
+    data = load_data() 
+    data[user_id]["stamina"] -= 1
+    save_data(data)
+
+def getstamina(user_id):
+    data = load_data() 
+    return(data[user_id]["stamina"])
+
 def resource_mag(userid,state):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
     if data[user_id][state] < 3:
             return(1)
@@ -253,7 +298,7 @@ def resource_mag(userid,state):
             return(14)
 
 def gain_state(userid,state,amount):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
     if state in ('MIL','BUS','TEC','CUL'):
         if state == 'MIL':
@@ -269,7 +314,7 @@ def gain_state(userid,state,amount):
     save_data(data)
 
 def gain_resource(userid,resource,amount):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
     data[user_id][resource] += amount
     save_data(data)
@@ -281,8 +326,8 @@ def get_date():
     return(curTinTW)
 
 def resource_levelup(userid,resource):
-    data = load_data()
-    user_id = str(userid)
+    data = load_data() 
+    user_id = str(userid) 
     resource_rs = resource + "_rs"
     if data[user_id][resource] == 1 and data[user_id][resource_rs] >= 50:
         data[user_id][resource_rs] -= 50
@@ -301,7 +346,7 @@ def resource_levelup(userid,resource):
     else:
         return("資源不夠")
     save_data(data)
-    return_text = "升級"
+    return_text = "```diff\n! 升級"
     if resource == "MIL":
         return_text += "軍事"
     elif resource == "BUS":
@@ -310,7 +355,7 @@ def resource_levelup(userid,resource):
         return_text += "科技"
     elif resource == "CUL":
         return_text += "文化"
-    return_text += "至 LV：" + str(data[user_id][resource])
+    return_text += "至 LV：" + str(data[user_id][resource]) + "\n```"
     return(return_text)
 
 def rank_check(number):
@@ -331,13 +376,13 @@ def rank_check(number):
 
 
 def rename(userid, user_name):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
     data[user_id]["name"] = user_name
     save_data(data)
 
 def erase(userid):
-    data = load_data()
+    data = load_data() 
     user_id = str(userid)
     if user_id in data:
         del data[user_id]

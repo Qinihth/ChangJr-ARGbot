@@ -1,124 +1,196 @@
-import discord
+import discord, random, pytz 
+from discord.ext import commands
+from discord import app_commands
+from ARG import resource_mag,load_data,gain_state, gain_resource
 
 
-def DockEvent(arg):
+def DockEvent(arg,user_id=0):
     match arg:
         case 1:
             dockclose = discord.Embed(title="拜師學藝",description="➤你探訪一處幽僻深山，恰巧遇到隱居在此的絕世高人，不想卻在拜師學藝的過程中弄傷了腿，只得無奈下山")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🗡️武力⬇️")
+            if random.randint(1,10) > 7 :
+                gain_state(user_id,'STR',-3)
+                dockclose.add_field(name="❖ 工作結算",value="• 武力<:MDT_DEC_B:1375507237614911659>")
+            else:
+                gain_state(user_id,'STR',-2)
+                dockclose.add_field(name="❖ 工作結算",value="• 武力<:MNR_DEC_B:1375507268753293516>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 2:
             dockclose = discord.Embed(title="野營受寒",description="➤你獨自來到山林野營，磨練自己的意志與生存技巧，卻不幸因受寒生病被迫提前下山。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🗡️武力⬇️")
+            gain_state(user_id,'STR',-1)
+            dockclose.add_field(name="❖ 工作結算",value="• 武力<:SLT_DEC_B:1375507385858265151>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 3:
             dockclose = discord.Embed(title="遭遇搶劫",description="➤你來到偏僻的小鎮，此處工藝鼎盛，但近年來治安不佳。你回程時天色已晚，果然遭遇搶劫，萬幸是並無大礙。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="👓內政⬇️")
+            gain_state(user_id,'DOM',-1)
+            dockclose.add_field(name="❖ 工作結算",value="• 內政<:SLT_DEC_B:1375507385858265151>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 4:
             dockclose = discord.Embed(title="討價還價",description="➤你與兜售紀念品的小販周旋，成功將心儀的商品閃成半價。本以為賺到，事後才發現自己被敲了竹槓。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="👓內政⬇️")
+            if random.randint(1,10) > 7 :
+                gain_state(user_id,'DOM',-3)
+                dockclose.add_field(name="❖ 工作結算",value="• 內政<:MDT_DEC_B:1375507237614911659>")
+            else:
+                gain_state(user_id,'DOM',-2)
+                dockclose.add_field(name="❖ 工作結算",value="• 內政<:MNR_DEC_B:1375507268753293516>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 5:
             dockclose = discord.Embed(title="海關扣留",description="➤你一不小心上錯了船，抵達目的地後才發現不對，又因沒有簽證導致被扣押在外國海關。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🧠智力⬇️")
+            if random.randint(1,10) > 7 :
+                gain_state(user_id,'INT',-3)
+                dockclose.add_field(name="❖ 工作結算",value="• 智力<:MDT_DEC_B:1375507237614911659>")
+            else:
+                gain_state(user_id,'INT',-2)
+                dockclose.add_field(name="❖ 工作結算",value="• 智力<:MNR_DEC_B:1375507268753293516>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 6:
             dockclose = discord.Embed(title="粗心大意",description="➤你此趟欲探訪秘境，然而出門前才驚覺沒帶證件。最後你只能眼睜睜看著船離岸，一邊對自己的粗心感到喪氣。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🧠智力⬇️")
+            gain_state(user_id,'INT',-2)
+            dockclose.add_field(name="❖ 工作結算",value="• 智力<:SLT_DEC_B:1375507385858265151>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 7:
             dockclose = discord.Embed(title="小鎮導覽",description="➤你請了一位地陪明天為你進行小鎮導覽，然而不小心睡過頭導致對方等了你好一會，使對方對你的印象不佳。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🩷魅力⬇️")
+            if random.randint(1,10) > 7 :
+                gain_state(user_id,'CHR',-3)
+                dockclose.add_field(name="❖ 工作結算",value="• 魅力<:MDT_DEC_B:1375507237614911659>")
+            else:
+                gain_state(user_id,'CHR',-2)
+                dockclose.add_field(name="❖ 工作結算",value="• 魅力<:MNR_DEC_B:1375507268753293516>")
+            dockclose.set_author(name="海港特殊事件-結算")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 8:
             dockclose = discord.Embed(title="火災警報",description="➤你被火災警報驚醒，來不及梳整就奪門而出，卻發現只是惡作劇，而你邋遢的模樣被同行的其他人無情嘲笑。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🩷魅力⬇️")
+            gain_state(user_id,'CHR',-1)
+            dockclose.add_field(name="❖ 工作結算",value="• 魅力<:SLT_DEC_B:1375507385858265151>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 9:
             dockclose = discord.Embed(title="山林修練",description="➤你獨自來到山林野營，磨練自己的意志與生存技巧。雖然艱苦，但山林的幽靜讓你得以沉澱自我。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🗡️武力⬆️⬆️")
+            roll = random.randint(1,10)
+            if roll > 9 :
+                gain_state(user_id,'STR',4)
+                dockclose.add_field(name="❖ 工作結算",value="• 武力<:SIG_INC_B:1375507375414575134>")
+            elif roll > 6 :
+                gain_state(user_id,'STR',3)
+                dockclose.add_field(name="❖ 工作結算",value="• 武力<:MDT_INC_B:1375507253800472658>")
+            else: 
+                gain_state(user_id,'STR',2)
+                dockclose.add_field(name="❖ 工作結算",value="• 武力<:MNR_INC_B:1375507280711123087>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 10:
             dockclose = discord.Embed(title="觀摩商店街",description="➤你此次來到鄰國的首都，花了許多時間仔細觀摩商店街的店舖與動線規劃，得到很大的啟發。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="👓內政⬆️⬆️")
+            roll = random.randint(1,10)
+            if roll > 9 :
+                gain_state(user_id,'DOM',4)
+                dockclose.add_field(name="❖ 工作結算",value="• 內政<:SIG_INC_B:1375507375414575134>")
+            elif roll > 6 :
+                gain_state(user_id,'DOM',3)
+                dockclose.add_field(name="❖ 工作結算",value="• 內政<:MDT_INC_B:1375507253800472658>")
+            else: 
+                gain_state(user_id,'DOM',2)
+                dockclose.add_field(name="❖ 工作結算",value="• 內政<:MNR_INC_B:1375507280711123087>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 11:
             dockclose = discord.Embed(title="輪船遊歷",description="➤你搭乘輪船，沿著海岸線遊歷多地、看盡山川地形，對於這些地區的地理環境與氣候有了更深的了解。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🧠智力⬆️⬆️")
+            roll = random.randint(1,10)
+            if roll > 9 :
+                gain_state(user_id,'INT',4)
+                dockclose.add_field(name="❖ 工作結算",value="• 智力<:SIG_INC_B:1375507375414575134>")
+            elif roll > 6 :
+                gain_state(user_id,'INT',3)
+                dockclose.add_field(name="❖ 工作結算",value="• 智力<:MDT_INC_B:1375507253800472658>")
+            else: 
+                gain_state(user_id,'INT',2)
+                dockclose.add_field(name="❖ 工作結算",value="• 智力<:MNR_INC_B:1375507280711123087>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 12:
             dockclose = discord.Embed(title="料理祕方",description="➤你此趟探訪海濱的小村莊，當地的婆婆媽媽們與你十分投緣，進而傳授你當地殊季節料理的製作秘方。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🩷魅力⬆️⬆️")
+            roll = random.randint(1,10)
+            if roll > 9 :
+                gain_state(user_id,'CHR',4)
+                dockclose.add_field(name="❖ 工作結算",value="• 魅力<:SIG_INC_B:1375507375414575134>")
+            elif roll > 6 :
+                gain_state(user_id,'CHR',3)
+                dockclose.add_field(name="❖ 工作結算",value="• 魅力<:MDT_INC_B:1375507253800472658>")
+            else: 
+                gain_state(user_id,'CHR',2)
+                dockclose.add_field(name="❖ 工作結算",value="• 魅力<:MNR_INC_B:1375507280711123087>")
             dockclose.set_author(name="海港特殊事件-結算")
-            return dockclose
-
+            return dockclose 
+        
         case 13:
             dockclose = discord.Embed(title="先發制人",description="➤你旅途中偶然聽見外地商人談及敵軍調動與物資轉運，便默記於心。回家後立即上報軍方，經研判屬實，我軍隨即調整部署，成功先發制人。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="⚔️軍事➕20")
+            amount = resource_mag(user_id,'STR') * random.randint(20,60)
+            gain_resource(user_id,'MIL_rs',amount)
+            dockclose.add_field(name="❖ 工作結算",value=f"• 軍事<:INC:1375507210448277595>{amount}")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 14:
             dockclose = discord.Embed(title="邊疆觀光",description="➤你探訪邊疆小鎮，此處手工藝鼎盛，令你讚歎不已。你立刻上書提議大力扶植該鎮觀光，果然大獲成功")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="⚖️商業➕20")
+            amount = resource_mag(user_id,'DOM') * random.randint(20,60)
+            gain_resource(user_id,'BUS_rs',amount)
+            dockclose.add_field(name="❖ 工作結算",value=f"• 商業<:INC:1375507210448277595>{amount}")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 15:
             dockclose = discord.Embed(title="地方祭典",description="➤你恰巧遇上當地祭典，深受文化衝擊與感動。返國後，你上書將此祭典列為官方節日，自此成為地方一大盛事。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🏺文化➕20")
+            amount = resource_mag(user_id,'CHR') * random.randint(20,60)
+            gain_resource(user_id,'CUL_rs',amount)
+            dockclose.add_field(name="❖ 工作結算",value=f"• 文化<:INC:1375507210448277595>{amount}")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 16:
             dockclose = discord.Embed(title="工廠參訪",description="➤你來到偏僻的小鎮並參訪當地工廠，驚覺該廠商技術力驚人。回家後，你上書促成政府與該廠商合作，果然造就雙贏局面")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value="🧪科技➕20")
+            amount = resource_mag(user_id,'INT') * random.randint(20,60)
+            gain_resource(user_id,'TEC_rs',amount)
+            dockclose.add_field(name="❖ 工作結算",value=f"• 科技<:INC:1375507210448277595>{amount}")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
         case 17:
             dockclose = discord.Embed(title="奄國觀光",description="➤你來到以回收產業發達出名的奄國，吃了當地的特產水餃與包子。遇到一群以理服人的大肌肌奄國人，還跟他們一起上山下海立旗子。")
             dockclose.add_field(name="Make 奄國 great again ！！",value="----------------------------------------------------",inline=False)
-            dockclose.add_field(name="❖ 工作結算",value=" 旅遊回憶⬆️⬆️")
+            dockclose.add_field(name="❖ 工作結算",value="旅遊回憶⬆️⬆️")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
 
@@ -135,7 +207,7 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value="❌跳水不及格成績 ⬆️⬆️ ")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-
+        
         case 20:
             dockclose = discord.Embed(title="好討厭的感覺啊！",description="➤既然你誠心誠意地發問了，為了防止世界被破壞，為了守護世界的和平......")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -212,7 +284,7 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value=" 👛 資產:heavy_minus_sign: 5000金、數張金融卡及證件")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-
+            
         case 31:
             dockclose = discord.Embed(title="救命夏夷跳！",description="➤本來你的腦袋有源源不絕的靈感浮現，下一秒突然有隻大強飛到你面前！！！！！\n嚇到靈感瞬間噴飛......唔...呃呃呃(開始狂吐)。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -240,7 +312,7 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value="💰資產⬆️⬆️⬆️\n❤️ 良心⬇️⬇️")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-
+            
         case 35:
             dockclose = discord.Embed(title="風中耳語",description="➤你獨自漫步在海堤上，正在考慮著下海的角度時，空無一人的海堤，徐徐的海風讓你忍不住的發抖。\n你聽見了風聲彷彿耳語飄散在耳際：「我有一個小知識……」")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -387,7 +459,7 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value="＼MYGA／，精神值增加10點。")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-
+        
         case 57:
             dockclose = discord.Embed(title="有福同享",description="➤中午休息時間，你到了奄茶購買飲品，剛好碰上了抽獎活動，幸運抽到買 1 送 10 ，你將額外送的 10 杯帶回工作場所與同事分享，提升了大家下午工作的能量。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -401,14 +473,14 @@ def DockEvent(arg):
             dockclose.add_field(name="❖ 工作結算",value="各項能力大幅下降⬇️⬇️⬇️⬇️\n你的人生在此寫下了一個大大污點…… ")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-
+            
         case 59:
             dockclose = discord.Embed(title="讓雞排飛",description="➤你走在路上，哼著歌，手上的塑膠袋裝著剛炸好的酥脆雞排，然後突然就被土匪給劫了雞排。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
             dockclose.add_field(name="❖ 工作結算",value="失去雞排\n心相⬇️ ⬇️ ⬇️ ⬇️ ⬇️")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
-
+            
         case 60:
             dockclose = discord.Embed(title="做人失敗",description="➤你是一位警長，正在會議中勸導大家找出兇殺案的兇手。\n經過了各方長期論述後得出了一個結論：先把你丟下海裡與闡國人作伴！\n只能說是你平時的誠信度不足，做人失敗...\n你還來不及逃離或是反抗就在會議後被眾人綁上石頭丟下水，成為海闡的一份子。")
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
@@ -477,5 +549,19 @@ def DockEvent(arg):
             dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
             dockclose.add_field(name="❖ 工作結算",value="")
             dockclose.set_image(url="attachment://51121.gif")
+            dockclose.set_author(name="海港特殊事件-結算")
+            return dockclose
+
+        case 70:
+            dockclose = discord.Embed(title="該回家了",description="➤你在科學院工作到深夜，想到今天好像有院內活動，打算打開院內的電視來看看表演重播提提神，活動布景看起來很像偶像演出的舞臺，你聽到了主持人的聲音「易公醬~」，然後看到酷似你主管的人舉起手「嗨~」\n\n嚇到馬上把電視關了，捏著眉心頻頻搖頭低喃「我不該這麼認真工作的......我該回家的......我錯了......」")
+            dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
+            dockclose.add_field(name="❖ 工作結算",value="科技 <:INC:1375507210448277595> 45\n今日行動力 <:DEC:1375507144438448188> 1")
+            dockclose.set_author(name="海港特殊事件-結算")
+            return dockclose
+
+        case 71:
+            dockclose = discord.Embed(title="你睡醒啦",description="➤你跳下海港時，撞到頭而昏迷。醒來的時候，你已身在疑似病房的地方。隨後你見到了傳說方士李耳，崑崙上師站在他身後。李耳走到你身旁說道：\n「好了，冷靜點聽我說，你昏迷了大約九年之久。我知道，你惦記的事情只有一個——截國已經成功統一蓬萊......」\n\n你崩潰的醒來，原來一切只是夢。截國早已被八國聯軍打敗，混元紀已成歷史。")
+            dockclose.add_field(name=" ",value="----------------------------------------------------",inline=False)
+            dockclose.add_field(name="❖ 工作結算",value="理智<:SLT_INC_B:1375507405059657778>")
             dockclose.set_author(name="海港特殊事件-結算")
             return dockclose
