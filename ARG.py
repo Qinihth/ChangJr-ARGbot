@@ -55,7 +55,7 @@ def kingdom_info(userid,kingdom):
     save_data(data)
 
 # NOTE: Work_update use an undefined variable 'state_name'
-# and this function is never called.
+# and this function is never called. Should this be removed?
 def Work_update(userid, mount: int):
     data = load_data() 
     user_id = str(userid)
@@ -112,6 +112,11 @@ def daily_check(userid):
             now = datetime.strptime(todate, "%Y%m%d")
             delta = now - last_feed
             days = delta.days
+            # TODO: Logic gap for pet death
+            # 1. This function only return 4(dead) when days >= 10, but the hunger
+            #    might drops <= 0 after hunger substraction.
+            # 2. If the player went on a vacation and came back, this function doesn't
+            #    exclude the vacation period.
             if days >= 10:
                 return(4)
             hunger = 0
