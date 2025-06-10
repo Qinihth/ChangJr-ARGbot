@@ -23,7 +23,7 @@ class Index(discord.ui.View):
         elif check_mark == 4:
             dead_message = "```diff\n- 模擬失敗，角色死亡\n```"
             await  interaction.response.send_message(dead_message,ephemeral=True)
-        elif check_mark == 4:
+        elif check_mark == 3:
             vacation_message = "```diff\n> 休假中\n```"
             await  interaction.response.send_message(vacation_message,ephemeral=True)
         else:
