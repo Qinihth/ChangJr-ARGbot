@@ -164,11 +164,11 @@ class FoodCourt(discord.ui.View):
     @discord.ui.button(label="包子",style=discord.ButtonStyle.primary)
     async def button_meal2(self, interaction: discord.Interaction, button: discord.ui.Button):
         feed_message = ARG.feed(str(interaction.user.id),2)
-        await interaction.response.send_message(embed=embed,ephemeral=True)
+        await interaction.response.send_message(feed_message,ephemeral=True)
     @discord.ui.button(label="奄茶特餐",style=discord.ButtonStyle.primary)
     async def button_meal3(self, interaction: discord.Interaction, button: discord.ui.Button):
         feed_message = ARG.feed(str(interaction.user.id),3)
-        await interaction.response.send_message(embed=embed,ephemeral=True)
+        await interaction.response.send_message(feed_message,ephemeral=True)
     
 class Shop(discord.ui.View):
     @discord.ui.button(label="升級軍事",style=discord.ButtonStyle.primary)
