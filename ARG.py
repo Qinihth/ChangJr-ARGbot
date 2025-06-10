@@ -54,6 +54,8 @@ def kingdom_info(userid,kingdom):
     data[user_id]["kingdom"] = kingdom
     save_data(data)
 
+# NOTE: Work_update use an undefined variable 'state_name'
+# and this function is never called.
 def Work_update(userid, mount: int):
     data = load_data() 
     user_id = str(userid)
