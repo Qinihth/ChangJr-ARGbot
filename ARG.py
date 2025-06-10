@@ -171,7 +171,7 @@ def vacation(user_id):
         data[user_id]["vacation"] = True
         save_data(data)
         rename_message = "```diff\n! 請假成功\n```"
-        return(rename_messag)
+        return(rename_message)
     elif data[user_id]["vacation"] == True:
         if data[user_id]["last_login"] != data[user_id]["last_feed"] :
             last_login = datetime.strptime(data[user_id]["last_login"], "%Y%m%d")
@@ -249,7 +249,7 @@ def event_lottery(userid,A,B,C,D,types):
         elif data[user_id][resource] == 5:
             for event in event_weights: 
                 if resource in event_weights[event]:
-                    event_weights[event1][resource] = 1
+                    event_weights[event][resource] = 1
             prob += 1
     if random.random() > prob/4:
         return(0)
