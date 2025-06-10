@@ -482,7 +482,7 @@ class PresistentViewBot(commands.Bot):
             guild = discord.Object(serverid)
             synced = await self.tree.sync(guild=guild)
             print(f'Synced {len(synced)} commands to guild {guild.id}')
-        except:
+        except Exception as e:
             print(f'Error syncing commands: {e}')
 
     async def on_message(self, message):
