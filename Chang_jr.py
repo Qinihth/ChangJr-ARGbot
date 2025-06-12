@@ -23,7 +23,7 @@ class Index(discord.ui.View):
         elif check_mark == 4:
             dead_message = "```diff\n- 模擬失敗，角色死亡\n```"
             await  interaction.response.send_message(dead_message,ephemeral=True)
-        elif check_mark == 4:
+        elif check_mark == 3:
             vacation_message = "```diff\n> 休假中\n```"
             await  interaction.response.send_message(vacation_message,ephemeral=True)
         else:
@@ -164,11 +164,11 @@ class FoodCourt(discord.ui.View):
     @discord.ui.button(label="包子",style=discord.ButtonStyle.primary)
     async def button_meal2(self, interaction: discord.Interaction, button: discord.ui.Button):
         feed_message = ARG.feed(str(interaction.user.id),2)
-        await interaction.response.send_message(embed=embed,ephemeral=True)
+        await interaction.response.send_message(feed_message,ephemeral=True)
     @discord.ui.button(label="奄茶特餐",style=discord.ButtonStyle.primary)
     async def button_meal3(self, interaction: discord.Interaction, button: discord.ui.Button):
         feed_message = ARG.feed(str(interaction.user.id),3)
-        await interaction.response.send_message(embed=embed,ephemeral=True)
+        await interaction.response.send_message(feed_message,ephemeral=True)
     
 class Shop(discord.ui.View):
     @discord.ui.button(label="升級軍事",style=discord.ButtonStyle.primary)
@@ -482,7 +482,7 @@ class PresistentViewBot(commands.Bot):
             guild = discord.Object(serverid)
             synced = await self.tree.sync(guild=guild)
             print(f'Synced {len(synced)} commands to guild {guild.id}')
-        except:
+        except Exception as e:
             print(f'Error syncing commands: {e}')
 
     async def on_message(self, message):

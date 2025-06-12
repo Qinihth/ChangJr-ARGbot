@@ -54,6 +54,8 @@ def kingdom_info(userid,kingdom):
     data[user_id]["kingdom"] = kingdom
     save_data(data)
 
+# NOTE: Work_update use an undefined variable 'state_name'
+# and this function is never called. Should this be removed?
 def Work_update(userid, mount: int):
     data = load_data() 
     user_id = str(userid)
@@ -110,6 +112,11 @@ def daily_check(userid):
             now = datetime.strptime(todate, "%Y%m%d")
             delta = now - last_feed
             days = delta.days
+            # TODO: Logic gap for pet death
+            # 1. This function only return 4(dead) when days >= 10, but the hunger
+            #    might drops <= 0 after hunger substraction.
+            # 2. If the player went on a vacation and came back, this function doesn't
+            #    exclude the vacation period.
             if days >= 10:
                 return(4)
             hunger = 0
@@ -171,7 +178,7 @@ def vacation(user_id):
         data[user_id]["vacation"] = True
         save_data(data)
         rename_message = "```diff\n! 請假成功\n```"
-        return(rename_messag)
+        return(rename_message)
     elif data[user_id]["vacation"] == True:
         if data[user_id]["last_login"] != data[user_id]["last_feed"] :
             last_login = datetime.strptime(data[user_id]["last_login"], "%Y%m%d")
@@ -249,7 +256,7 @@ def event_lottery(userid,A,B,C,D,types):
         elif data[user_id][resource] == 5:
             for event in event_weights: 
                 if resource in event_weights[event]:
-                    event_weights[event1][resource] = 1
+                    event_weights[event][resource] = 1
             prob += 1
     if random.random() > prob/4:
         return(0)
